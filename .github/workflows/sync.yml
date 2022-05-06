@@ -1,5 +1,7 @@
-name: Sync(手动执行切换到配置文件部署)
+name: Sync(同步/升级部署脚本) #一般无需手动执行,部署脚本每次执行就是部署最新代码,这个脚本只是用来升级部署脚本,部署脚本基本不更新
 on:
+  schedule:
+    - cron: '0 16,22,4,10 * * *'
   workflow_dispatch:
 jobs:
   repo-sync:
@@ -12,11 +14,11 @@ jobs:
       - uses: actions/checkout@v2
         with:
           persist-credentials: false
-      - name: sync zero205-scripts
+      - name: sync
         uses: repo-sync/github-sync@v2
         if: env.PAT
         with:
-          source_repo: "https://github.com/icecoke1024/JD_tencent_scf.git"
-          source_branch: "scf2"
+          source_repo: "https://github.com/icecoke1024/cron.git"
+          source_branch: "main"
           destination_branch: "main"
           github_token: ${{ secrets.PAT }}
